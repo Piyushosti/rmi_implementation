@@ -64,6 +64,14 @@ public:
         return invoke("subtract", a, b);
     }
 
+    double multiply(double a, double b) override {
+        return invoke("multiply", a, b);
+    }
+
+    double divide(double a, double b) override {
+        return invoke("divide", a, b);
+    }
+
     ~CalculatorStub() {
         close(sock);
     }
