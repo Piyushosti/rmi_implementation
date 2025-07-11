@@ -16,6 +16,11 @@ class CalculatorServiceImpl : public CalculatorService {
 public:
     double add(double a, double b) override { return a + b; }
     double subtract(double a, double b) override { return a - b; }
+   double multiply(double a, double b) override { return a * b; }
+    double divide(double a, double b) override {
+        if (b == 0) return 0; 
+        return a / b;
+    }
 };
 
 // Handle client requests
@@ -37,16 +42,23 @@ void handleClient(int client_socket) {
 
         ss >> method >> a >> b;
 
-        std::string response;
+         std::string response;
         if (method == "add") {
             response = std::to_string(calc.add(a, b));
         } else if (method == "subtract") {
             response = std::to_string(calc.subtract(a, b));
+        } else if (method == "multiply") {
+            response = std::to_string(calc.multiply(a, b));
+        } else if (method == "divide") {
+            if (b == 0) {
+                response = "Error: Division by zero";
+            } else {
+                response = std::to_string(calc.divide(a, b));
+            }
         } else {
             response = "Invalid method";
         }
-
-        send(client_socket, response.c_str(), response.length(), 0);
+ send(client_socket, response.c_str(), response.length(), 0);
         memset(buffer, 0, BUFFER_SIZE);
     }
     close(client_socket);
